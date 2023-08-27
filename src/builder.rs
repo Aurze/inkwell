@@ -1865,11 +1865,11 @@ impl<'ctx> Builder<'ctx> {
     }
 
     // SubType: <I>(&self, lhs: &IntValue<I>, rhs: &IntValue<I>, name: &str) -> IntValue<I> {
-    pub fn build_int_add<T: IntMathValue<'ctx>>(&self, lhs: T, rhs: T, name: &str) -> T {
+    pub fn build_int_add<T1: IntMathValue<'ctx>, T2: IntMathValue<'ctx>>(&self, lhs: T1, rhs: T2, name: &str) -> T1 {
         let c_string = to_c_str(name);
         let value = unsafe { LLVMBuildAdd(self.builder, lhs.as_value_ref(), rhs.as_value_ref(), c_string.as_ptr()) };
 
-        unsafe { T::new(value) }
+        unsafe { T1::new(value) }
     }
 
     // REVIEW: Possibly incorperate into build_int_add via flag param
